@@ -18,7 +18,6 @@ public class MainServer {
             while(true){
                 Socket clientSocket = serverSocket.accept();
                 System.out.println("클라이언트 소켓 연결");
-                System.out.println(userList);
                 ClientManagerThread clientManagerThread = new ClientManagerThread();
                 clientManagerThread.setClientSocket(clientSocket);
                 clientManagerThread.start();

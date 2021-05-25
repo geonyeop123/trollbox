@@ -20,8 +20,9 @@ public class SendThread extends Thread{
         try{
             dataOutputStream = new DataOutputStream(clientSocket.getOutputStream());
             sc = new Scanner(System.in);
-
-            makeUserID();
+            System.out.println("아이디를 입력해주세요.");
+            String userID = sc.nextLine();
+            makeUserID(userID);
             while(true){
                 message = sc.nextLine();
                 if(message.equals("/exit")){
@@ -39,22 +40,14 @@ public class SendThread extends Thread{
         }
     }
 
-    public void makeUserID(){
-        System.out.println("아이디를 입력해주세요.");
-        String userID = sc.nextLine();
+    public void makeUserID(String userID){
         try {
             dataInputStream = new DataInputStream(clientSocket.getInputStream());
             dataOutputStream.writeUTF(userID);
             if (dataInputStream.readUTF().equals("0")) {
-                while (true) {
                     System.out.println("중복된 아이디입니다. 다시 아이디를 입력해주세요.");
-                    userID = sc.nextLine();
-                    dataOutputStream.writeUTF(userID);
-                    if (!dataInputStream.readUTF().equals("0")) {
-                        MainClient.userID = userID;
-                        break;
-                    }
-                }
+                    String userID2 = sc.nextLine();
+                    makeUserID(userID2);
             } else {
                 MainClient.userID = userID;
                 System.out.println("채팅에 입장하셨습니다. 건전한 채팅 부탁드립니다.");

@@ -35,7 +35,6 @@ public class ClientManagerThread extends Thread{
         try{
             MainServer.outputList.remove(dataOutputStream);
             MainServer.userList.remove(userID);
-            System.out.println("MainServer.outputList.size() : " + MainServer.outputList.size());
             clientSocket.close();
         }catch(Exception e){
             e.printStackTrace();

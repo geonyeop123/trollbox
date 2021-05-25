@@ -15,7 +15,7 @@ public class ReceiveThread extends Thread{
                 message = dataInputStream.readUTF();
                 System.out.println(message);
             }
-        }catch(Exception e){
+        }catch(Exception e){ // 접속 종료
             System.out.println("종료되었습니다.");
         }
     }

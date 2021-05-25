@@ -1,6 +1,5 @@
 package chatClient;
 
-import chatServer.*;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -10,7 +9,6 @@ import java.util.Scanner;
 public class SendThread extends Thread{
     private Socket clientSocket;
     private DataOutputStream dataOutputStream;
-    private DataInputStream dataInputStream;
     private Scanner sc;
 
     @Override
@@ -22,7 +20,7 @@ public class SendThread extends Thread{
             sc = new Scanner(System.in);
             System.out.println("아이디를 입력해주세요.");
             String userID = sc.nextLine();
-            makeUserID(userID);
+            makeUserID(userID); // 최초 접속 시 아이디 생성
             while(true){
                 message = sc.nextLine();
                 if(message.equals("/exit")){
@@ -31,7 +29,7 @@ public class SendThread extends Thread{
                 dataOutputStream.writeUTF(message);
             }
 
-            sc.close();
+            sc.close(); // 접속 종료
             dataOutputStream.close();
             clientSocket.close();
 
@@ -42,14 +40,14 @@ public class SendThread extends Thread{
 
     public void makeUserID(String userID){
         try {
-            dataInputStream = new DataInputStream(clientSocket.getInputStream());
+            DataInputStream dataInputStream = new DataInputStream(clientSocket.getInputStream());
             dataOutputStream.writeUTF(userID);
             if (dataInputStream.readUTF().equals("0")) {
                     System.out.println("중복된 아이디입니다. 다시 아이디를 입력해주세요.");
                     String userID2 = sc.nextLine();
                     makeUserID(userID2);
             } else {
-                MainClient.userID = userID;
+                MainClient.userID = userID; // 아이디 생성 완료
                 System.out.println("채팅에 입장하셨습니다. 건전한 채팅 부탁드립니다.");
                 ReceiveThread receiveThread = new ReceiveThread();
                 receiveThread.setClientSocket(clientSocket);
